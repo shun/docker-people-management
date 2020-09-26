@@ -50,6 +50,20 @@ services:
     ports:
       - "14000:4000"
 
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./frontend/Dockerfile
+    tty: true
+    command: bash
+    ports:
+      - "18080:4200"
+    volumes:
+      - ./frontend/src:/home/node/frontapp/src
+      - ./frontend/package.json:/home/node/frontapp/package.json
+      - ./frontend/tsconfig.json:/home/node/frontapp/tsconfig.json
+      - ./frontend/tslint.json:/home/node/frontapp/tslint.json
+
 volumes:
   mysql:
     driver: "local"

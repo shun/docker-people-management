@@ -1,0 +1,23 @@
+<div
+  class="cl-list"
+    pDraggable="item"
+    pDroppable="item"
+    (onDrop)="dropColumn($event)"
+>
+  <div
+    class="cl-row {{item.hover}} {{item.selected}}"
+    pDraggable="item"
+    pDroppable="item"
+    *ngFor="let item of availableItems; index as i"
+    (onDragStart)="dragStart($event, item, i)"
+    (onDragEnd)="dragEnd($event, item)"
+    (onDragEnter)="dragEnter($event, item)"
+    (onDragLeave)="dragLeave($event, item)"
+    (onDrop)="drop($event, item, i)"
+    (click)="clicked($event, item)"
+  >
+    <div class="cl-icon"><i class="pi {{item.icon}}"></i></div>
+    <div class="cl-body"><label>{{item.label}}</label></div>
+    <div class="cl-parent"><i class="pi pi-angle-right" *ngIf="item.is_group"></i></div>
+  </div>
+</div>
