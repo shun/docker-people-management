@@ -112,6 +112,9 @@ export class ColumnFlowBodyComponent implements OnInit {
 
   dropColumn(event: any) {
     console.log("dropColumn");
+    if (this.draggedItem) {
+      this.availableItems.push(this.draggedItem);
+    }
   }
 
   drop(event: any, item: Item, index: number) {
@@ -123,9 +126,10 @@ export class ColumnFlowBodyComponent implements OnInit {
       return;
     }
 
-    console.log(this.draggedItem);
+    //console.log(this.draggedItem);
     if (this.draggedItem) {
       item.children.push(this.draggedItem);
+      this.draggedItem = null;
     }
   }
 
