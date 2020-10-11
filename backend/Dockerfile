@@ -20,11 +20,9 @@ RUN yarn add \
          @types/cookie-parser \
          @types/express \
          @types/express-session \
-         @types/graphql@^14.0.0 \
          @types/jest \
          @types/keycloak-connect \
          @types/node \
-         @types/openid-client \
          @types/passport \
          @types/supertest \
          @typescript-eslint/eslint-plugin \
@@ -45,7 +43,7 @@ RUN yarn add \
          express-graphql \
          express-session \
          graphql-tools \
-         graphql@^14.0.0 \
+         graphql \
          jest \
          keycloak-connect \
          mysql2 \
@@ -58,7 +56,7 @@ RUN yarn add \
          ts-jest \
          ts-node \
          tsconfig-paths \
-         type-graphql@^0.17.0 \
+         type-graphql \
          typescript \
     && rm /home/node/app/ormconfig.json
 

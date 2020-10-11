@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
-import { ViewOrganizedUser } from "./ViewOrganizedUser";
+import { ViewUserOrganization } from "./ViewUserOrganization";
 
 @Entity()
 @ObjectType()
@@ -25,8 +25,4 @@ export class PersonalInfo {
     @Column({type: "boolean", default: false})
     @Field()
     delflg: boolean;
-
-    @ManyToOne(type => ViewOrganizedUser, user => user.infolist)
-    @Field(type => ViewOrganizedUser)
-    user: ViewOrganizedUser;
 }

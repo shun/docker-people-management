@@ -22,16 +22,17 @@ services:
     volumes:
       - mysql:/var/lib/mysql
     ports:
-      - "13306:3306"
+      - "3306:3306"
 
   backend:
+    image: kudoshunsuke/docker-people-management-backend
     build:
       context: ./
       dockerfile: ./backend/Dockerfile
     depends_on:
       - db
     tty: true
-    command: bash
+    command: yarn start
     entrypoint: /entrypoint.sh
     environment:
       DB_NAME: *DB_NAME
@@ -51,6 +52,7 @@ services:
       - "14000:4000"
 
   frontend:
+    image: kudoshunsuke/docker-people-management-frontend
     build:
       context: ./
       dockerfile: ./frontend/Dockerfile
