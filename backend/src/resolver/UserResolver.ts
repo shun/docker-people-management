@@ -37,9 +37,9 @@ export class UserResolver {
   //  return user;
   //}
 
-  @Query(() => ViewUserOrganization, {nullable: true})
-  async hoge(): Promise<ViewUserOrganization | undefined> {
-    const root = await getRepository(ViewUserOrganization).findOne({
+  @Query(() => [ViewUserOrganization], {nullable: true})
+  async hoge(): Promise<ViewUserOrganization[] | undefined> {
+    const root = await getRepository(ViewUserOrganization).find({
       relations: [
         "infolist"
       ]

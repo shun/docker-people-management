@@ -1,4 +1,4 @@
-import { Connection, ViewEntity, ViewColumn, OneToMany } from "typeorm";
+import { Connection, ViewEntity, ViewColumn, PrimaryColumn, OneToMany } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
 import { User } from "./User";
 import { OrgSection } from "./OrgSection";
@@ -29,6 +29,7 @@ import { ViewLatestPersonalInfo } from "./ViewLatestPersonalInfo";
 export class ViewUserOrganization {
 
     @ViewColumn()
+    @PrimaryColumn()
     @Field()
     user_cd: string;
 

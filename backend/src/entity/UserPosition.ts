@@ -17,10 +17,6 @@ export class UserPosition {
     @Field()
     section_id: number;
 
-    @Column({default: false})
-    @Field()
-    delflg: boolean;
-
     @Column({type: "date", nullable: true})
     @Field(type => Date)
     start_date: Date | null;
@@ -28,4 +24,9 @@ export class UserPosition {
     @Column({type: "date", nullable: true})
     @Field(type => Date)
     end_date: Date | null;
+
+    @Column({default: false})
+    @Field()
+    delflg: boolean;
+
 }

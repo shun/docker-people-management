@@ -17,10 +17,6 @@ export class OfficialRank {
     @Field()
     rankvalue: number;
 
-    @Column()
-    @Field()
-    delflg: boolean;
-
     @Column({type: "date", nullable: true})
     @Field(type => Date)
     start_date: Date | null;
@@ -28,4 +24,9 @@ export class OfficialRank {
     @Column({type: "date", nullable: true})
     @Field(type => Date)
     end_date: Date | null;
+
+    @Column()
+    @Field()
+    delflg: boolean;
+
 }

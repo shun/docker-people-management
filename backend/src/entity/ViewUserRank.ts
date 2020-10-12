@@ -1,4 +1,4 @@
-import { Connection, ViewEntity, ViewColumn, OneToMany } from "typeorm";
+import { Connection, ViewEntity, ViewColumn, PrimaryColumn, OneToMany } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
 import { User } from "./User";
 import { UserRank } from "./UserRank";
@@ -24,6 +24,7 @@ import { OfficialRank } from "./OfficialRank";
 export class ViewUserRank {
 
     @ViewColumn()
+    @PrimaryColumn()
     @Field()
     user_cd: string;
 

@@ -11,11 +11,11 @@ export class User {
 
     @Column({type: "varchar", length: 32})
     @Field()
-    firstName: string;
+    lastName: string;
 
     @Column({type: "varchar", length: 32})
     @Field()
-    lastName: string;
+    firstName: string;
 
     @Column({type: "boolean", default: false})
     @Field()
