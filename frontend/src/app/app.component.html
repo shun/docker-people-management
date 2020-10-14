@@ -1,6 +1,78 @@
 <!-- Toolbar -->
-<div class="main">
-<column-flow>
-</column-flow>
-<router-outlet></router-outlet>
+<div class="toolbar" role="banner">
 </div>
+
+<div class="content" role="main">
+
+  <p-table
+    #dt
+    [value]="cols"
+    [rows]="20"
+    [rowsPerPageOptions]="[10,20,50,100]"
+    [paginator]="true"
+    [filterDelay]="0"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          <div pSortableColumn="col1">
+            <label style="text-decoration: underline;">
+            col1
+            </label>
+            <p-sortIcon field="col1"></p-sortIcon><br/>
+          </div>
+          <input pInputText type="text" style="width: 100%;" (input)="dt.filter($event.target.value, 'col1', 'contains')">
+        </th>
+        <th>
+          <div pSortableColumn="col2">
+            <label style="text-decoration: underline;">
+              col2
+            </label>
+            <p-sortIcon field="col2"></p-sortIcon><br/>
+          </div>
+          <input pInputText type="text" style="width: 100%;" (input)="dt.filter($event.target.value, 'col2', 'contains')">
+        </th>
+        <th>
+          <div pSortableColumn="col3">
+            <label style="text-decoration: underline;">
+              col3
+            </label>
+            <p-sortIcon field="col3"></p-sortIcon><br/>
+          </div>
+          <input pInputText type="text" style="width: 100%;" (input)="dt.filter($event.target.value, 'col3', 'contains')">
+        </th>
+        <th>
+          <div pSortableColumn="col4">
+            <label style="text-decoration: underline;">
+              col4
+            </label>
+            <p-sortIcon field="col4"></p-sortIcon><br/>
+          </div>
+          <input pInputText type="text" style="width: 100%;" (input)="dt.filter($event.target.value, 'col4', 'contains')">
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-col>
+      <tr>
+        <td>
+          {{ col.col1 }}
+        </td>
+        <td>
+          {{ col.col2 }}
+        </td>
+        <td>
+          {{ col.col3 }}
+        </td>
+        <td>
+          {{ col.col4 }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
+
+<router-outlet></router-outlet>

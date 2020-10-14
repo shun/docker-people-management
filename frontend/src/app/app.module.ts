@@ -1,31 +1,29 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import { DragDropModule } from 'primeng/dragdrop';
-import { PanelModule } from 'primeng/panel';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ColumnFlowComponent } from './components/column-flow/column-flow.component';
-import { ColumnFlowBodyComponent } from './components/column-flow/column-flow-body/column-flow-body.component';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ColumnFlowComponent,
-    ColumnFlowBodyComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DragDropModule,
-    PanelModule,
+    TableModule,
     BrowserAnimationsModule,
-    NoopAnimationsModule,
+    FormsModule,
+    AutoCompleteModule,
+    InputTextModule,
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
