@@ -1,0 +1,9 @@
+{
+  "package.json": {
+    "scripts": {
+    }
+  },
+  "tsconfig.json": {
+    "strict": true
+  }
+}
