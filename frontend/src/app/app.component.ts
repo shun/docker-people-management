@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
+import { PeopleService } from "./services/people.service";
 
 type Item = {
   col1: string;
@@ -30,7 +31,7 @@ export class AppComponent implements OnInit {
 
   cols: Item[] = [];
 
-  constructor() {
+  constructor(private peopleService: PeopleService) {
   }
 
   ngOnInit() {
@@ -61,6 +62,9 @@ export class AppComponent implements OnInit {
       });
     }
 
-    console.log(this.cols);
+    this.peopleService.sections()
+    .then((res) => {
+      console.log(res);
+    });
   }
 }
