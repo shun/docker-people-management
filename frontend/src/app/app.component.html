@@ -4,6 +4,42 @@
 
 <div class="content" role="main">
 
+  <table class="table-layout">
+    <colgroup>
+      <col class="col-style">
+      <col class="col-style">
+      <col class="col-style">
+      <col class="col-style">
+      <col class="col-style">
+      <col class="col-style">
+      <col class="col-style">
+    </colgroup>
+
+    <thead>
+      <tr>
+        <th *ngFor="let col of calendarHeaderCols" class="{{col.styleClass}}">{{col.label}}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let row of calendarData.calendarRows; index as ri" >
+        <td *ngFor="let col of row.calendarBodyCols; index as ci" class="cell-style">
+          <div *ngIf="col.day !== -1">
+            <section>{{col.day}}</section>
+            <p-listbox
+              [options]="col.items"
+              [(ngModel)]="col.val"
+              listStyleClass="mylistbox"
+              (onChange)="onChangeListBox($event, ri, ci)"
+              optionLabel="label"
+              >
+            </p-listbox>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
   <p-table
     #dt
     [value]="cols"
@@ -13,9 +49,10 @@
     [filterDelay]="0"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    styleClass="dt-demo"
   >
     <ng-template pTemplate="header">
-      <tr>
+      <tr class="myhdr">
         <th>
           <div pSortableColumn="col1">
             <label style="text-decoration: underline;">

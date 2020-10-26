@@ -64,7 +64,6 @@ services:
       - ./frontend/src:/home/node/frontapp/src
       - ./frontend/package.json:/home/node/frontapp/package.json
       - ./frontend/tsconfig.json:/home/node/frontapp/tsconfig.json
-      - ./frontend/tslint.json:/home/node/frontapp/tslint.json
 
 volumes:
   mysql:

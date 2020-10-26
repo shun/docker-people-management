@@ -37,6 +37,13 @@ export class UserResolver {
   //  return user;
   //}
 
+  @Query(() => [OrgSection])
+  async sections(): Promise<OrgSection[]> {
+    const sections = await getRepository(OrgSection).find();
+
+    return sections || [];
+  }
+
   @Query(() => [ViewUserOrganization], {nullable: true})
   async hoge(): Promise<ViewUserOrganization[] | undefined> {
     const root = await getRepository(ViewUserOrganization).find({
