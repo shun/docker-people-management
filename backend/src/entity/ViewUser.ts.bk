@@ -1,0 +1,94 @@
+import { ViewEntity, ViewColumn, Connection, OneToMany } from "typeorm";
+import { ObjectType, Field, InputType } from "type-graphql";
+
+import { User } from "./User";
+import { UserProperty } from "./UserProperty";
+import { ViewUserOrganization } from "./ViewUserOrganization";
+import { ViewUserLocation } from "./ViewUserLocation";
+import { ViewUserRank } from "./ViewUserRank";
+
+@ViewEntity({
+  name: "ViewUser",
+  expression: (connection: Connection) =>
+    connection
+      .createQueryBuilder()
+      .select("u.id", "user_id")
+      .addSelect("up.value", "user_cd")
+      .addSelect("u.sei", "sei")
+      .addSelect("u.mei", "mei")
+      .addSelect("u.sei_kana", "sei_kana")
+      .addSelect("u.mei_kana", "mei_kana")
+      .addSelect("u.sei_en", "sei_en")
+      .addSelect("u.mei_en", "mei_en")
+      .addSelect("u.password", "password")
+      .addSelect("u.start_date", "start_date")
+      .addSelect("u.end_date", "end_date")
+      .from(User, "u")
+      .innerJoin(UserProperty, "up", "up.user_id = u.id")
+      .where("u.end_date is NULL")
+      .andWhere("up.key = 'user_cd'")
+      .andWhere("up.end_date is NULL"),
+})
+@ObjectType()
+export class ViewUser {
+  @ViewColumn()
+  @Field()
+  user_id: number;
+
+  @ViewColumn()
+  @Field()
+  user_cd: string;
+
+  @ViewColumn()
+  @Field()
+  sei: string;
+
+  @ViewColumn()
+  @Field()
+  mei: string;
+
+  @ViewColumn()
+  @Field()
+  sei_kana: string;
+
+  @ViewColumn()
+  @Field()
+  mei_kana: string;
+
+  @ViewColumn()
+  @Field()
+  sei_en: string;
+
+  @ViewColumn()
+  @Field()
+  mei_en: string;
+
+  @ViewColumn()
+  @Field()
+  password: string;
+
+  @ViewColumn()
+  @Field()
+  start_date: Date;
+
+  @ViewColumn()
+  @Field({ nullable: true })
+  end_date: Date;
+
+  // Relation
+  @OneToMany(() => UserProperty, (property) => property.user)
+  @Field((type) => [UserProperty])
+  properties: UserProperty[];
+
+  @OneToMany(() => ViewUserOrganization, (org) => org.user)
+  @Field((type) => [ViewUserOrganization])
+  orgs: ViewUserOrganization[];
+
+  @OneToMany(() => ViewUserLocation, (location) => location.user)
+  @Field((type) => [ViewUserLocation])
+  locations: ViewUserLocation[];
+
+  @OneToMany(() => ViewUserRank, (rank) => rank.user)
+  @Field((type) => [ViewUserRank])
+  ranks: ViewUserRank[];
+}

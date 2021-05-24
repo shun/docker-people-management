@@ -7,20 +7,20 @@ import {
 } from "typeorm";
 import { ObjectType, Field, InputType } from "type-graphql";
 
-@Entity("OrgLayers")
+@Entity("UserLocations")
 @ObjectType()
-export class OrgLayer {
+export class UserLocation {
   @PrimaryGeneratedColumn()
   @Field()
   id: number;
 
-  @Column({ type: "varchar", length: 16, comment: "階層名" })
+  @Column({ type: "int", width: 11, comment: "ユーザのid" })
   @Field()
-  name: string;
+  user_id: number;
 
-  @Column({ type: "int", width: 11, comment: "階層の深さ" })
+  @Column({ type: "int", width: 11, comment: "拠点のid" })
   @Field()
-  deep: number;
+  location_id: number;
 
   @Column({ type: "date", comment: "運用開始日" })
   @Field((type) => String)
@@ -48,4 +48,4 @@ export class OrgLayer {
 }
 
 //@InputType()
-//export class AddOrgLayerData implements Partial<OrgLayer> {}
+//export class AddUserLocationData implements Partial<UserLocation> {}

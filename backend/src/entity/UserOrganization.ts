@@ -1,31 +1,63 @@
-import {Entity, PrimaryColumn, Column} from "typeorm";
-import { ObjectType, Field } from "type-graphql";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { ObjectType, Field, InputType } from "type-graphql";
 
-@Entity()
+@Entity("UserOrganizations")
 @ObjectType()
 export class UserOrganization {
+  @PrimaryGeneratedColumn()
+  @Field()
+  id: number;
 
-    @PrimaryColumn({type: "char", length: 8})
-    @Field()
-    user_cd: string;
+  @Column({ type: "int", width: 11, comment: "ユーザのid" })
+  @Field()
+  user_id: number;
 
-    @PrimaryColumn()
-    @Field()
-    section_id: number;
+  @Column({ type: "int", width: 11, comment: "所属のid" })
+  @Field()
+  section_id: number;
 
-    @PrimaryColumn()
-    @Field()
-    position_id: number;
+  @Column({
+    type: "int",
+    width: 11,
+    comment: "所属の優先順位。小さい方が優先順位が高い",
+  })
+  @Field()
+  priority: number;
 
-    @Column({default: false})
-    @Field()
-    priority: number;
+  @Column({ type: "varchar", length: 16, comment: "役職名" })
+  @Field()
+  position_name: string;
 
-    @Column({type: "date", nullable: true})
-    @Field(type => Date)
-    start_date: Date | null;
+  @Column({ type: "date", comment: "運用開始日" })
+  @Field((type) => String)
+  start_date: Date;
 
-    @Column({type: "date", nullable: true})
-    @Field(type => Date)
-    end_date: Date | null;
+  @Column({
+    type: "date",
+    nullable: true,
+    default: null,
+    comment: "運用終了日",
+  })
+  @Field((type) => String, { nullable: true })
+  end_date: Date;
+
+  @CreateDateColumn({ comment: "作成日時" })
+  @Field()
+  created_at: Date;
+
+  @UpdateDateColumn({
+    onUpdate: "current_timestamp()",
+    comment: "更新日時",
+  })
+  @Field()
+  updated_at: Date;
 }
+
+//@InputType()
+//export class AddUserOrganizationData implements Partial<UserOrganization> {}

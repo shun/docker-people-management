@@ -1,71 +1,93 @@
-import { Connection, ViewEntity, ViewColumn, PrimaryColumn, OneToMany } from "typeorm";
-import { ObjectType, Field } from "type-graphql";
+import {
+  ViewEntity,
+  ViewColumn,
+  Connection,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { ObjectType, Field, InputType } from "type-graphql";
+
 import { User } from "./User";
-import { OrgSection } from "./OrgSection";
-import { OfficialPosition } from "./OfficialPosition";
 import { UserOrganization } from "./UserOrganization";
-import { ViewLatestPersonalInfo } from "./ViewLatestPersonalInfo";
+import { Section } from "./Section";
+import { Position } from "./Position";
+import { UserProperty } from "./UserProperty";
 
 @ViewEntity({
-  expression: (connection: Connection) => connection.createQueryBuilder()
-    .select("u.code",          "user_cd")
-    .addSelect("u.lastname",   "lastname")
-    .addSelect("u.firstname",  "firstname")
-    .addSelect("os.order",      "order")
-    .addSelect("uo.priority",   "priority")
-    .addSelect("os.path",       "path")
-    .addSelect("op.title",      "title")
-    .addSelect("uo.start_date", "start_date")
-    .addSelect("uo.end_date",   "end_date")
-    .from(User, "u")
-    .leftJoin(UserOrganization, "uo", "u.code = uo.user_cd")
-    .leftJoin(OrgSection, "os", "uo.section_id = os.id")
-    .leftJoin(OfficialPosition, "op", "uo.position_id = op.id")
-    .where("u.delflg = 0")
-    .andWhere("uo.end_date is NULL")
-    .andWhere("os.end_date is NULL")
+  name: "ViewUserOrganizations",
+  expression: (connection: Connection) =>
+    connection
+      .createQueryBuilder()
+      .select("u.id", "user_id")
+      .addSelect("up.value", "user_cd")
+      .addSelect("u.sei", "sei")
+      .addSelect("u.mei", "mei")
+      .addSelect("s.path", "path")
+      .addSelect("uo.position_name", "position_name")
+      .addSelect("p.value", "position_value")
+      .addSelect("uo.priority", "priority")
+      .addSelect("uo.start_date", "start_date")
+      .addSelect("uo.end_date", "end_date")
+      .from(User, "u")
+      .innerJoin(UserProperty, "up", "up.user_id = u.id")
+      .innerJoin(UserOrganization, "uo", "uo.user_id = u.id")
+      .innerJoin(Section, "s", "uo.section_id = s.id")
+      .innerJoin(Position, "p", "uo.position_name = p.name")
+      .where("u.end_date is NULL")
+      .andWhere("up.key = 'user_cd'")
+      .andWhere("up.end_date is NULL")
+      .andWhere("uo.end_date is NULL")
+      .andWhere("s.end_date is NULL")
+      .andWhere("p.end_date is NULL"),
 })
 @ObjectType()
 export class ViewUserOrganization {
+  @ViewColumn()
+  @Field()
+  user_id: number;
 
-    @ViewColumn()
-    @PrimaryColumn()
-    @Field()
-    user_cd: string;
+  @ViewColumn()
+  @Field()
+  user_cd: string;
 
-    @ViewColumn()
-    @Field()
-    lastname: string;
+  @ViewColumn()
+  @Field()
+  sei: string;
 
-    @ViewColumn()
-    @Field()
-    firstname: string;
+  @ViewColumn()
+  @Field()
+  mei: string;
 
-    @ViewColumn()
-    @Field()
-    order: number;
+  @ViewColumn()
+  @Field()
+  path: string;
 
-    @ViewColumn()
-    @Field()
-    priority: number;
+  @ViewColumn()
+  @Field()
+  position_name: string;
 
-    @ViewColumn()
-    @Field()
-    path: string;
+  @ViewColumn()
+  @Field()
+  position_value: string;
 
-    @ViewColumn()
-    @Field()
-    title: string;
+  @ViewColumn()
+  @Field()
+  priority: number;
 
-    @ViewColumn()
-    @Field(type => Date)
-    start_date: Date | null;
+  @ViewColumn()
+  @Field((type) => String)
+  start_date: Date;
 
-    @ViewColumn()
-    @Field(type => Date, {nullable: true})
-    end_date: Date | null;
+  @ViewColumn()
+  @Field((type) => String, { nullable: true })
+  end_date: Date;
 
-    @OneToMany(type => ViewLatestPersonalInfo, info => info.user)
-    @Field(type => [ViewLatestPersonalInfo])
-    infolist: ViewLatestPersonalInfo[];
+  // Relation
+  @ManyToOne(() => User, (user) => user.orgs)
+  @JoinColumn({
+    name: "user_id",
+    referencedColumnName: "id",
+  })
+  @Field((type) => User)
+  user: User;
 }

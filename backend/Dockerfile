@@ -10,23 +10,14 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/* \
     && yarn global add \
         typeorm \
+        typesync \
     && typeorm init --name app --database mysql \
     && chown -R node:node /home/node
 
 USER node
 WORKDIR /home/node/app
 RUN yarn add \
-         @types/bcrypt \
-         @types/cookie-parser \
-         @types/express \
          @types/express-session \
-         @types/jest \
-         @types/keycloak-connect \
-         @types/node \
-         @types/passport \
-         @types/supertest \
-         @typescript-eslint/eslint-plugin \
-         @typescript-eslint/parser \
          apollo-cache-inmemory \
          apollo-client \
          apollo-link-error \
@@ -58,7 +49,8 @@ RUN yarn add \
          tsconfig-paths \
          type-graphql \
          typescript \
-    && rm /home/node/app/ormconfig.json
+    && rm /home/node/app/ormconfig.json \
+    && typesync
 
 ENV APP_HOME /home/node/app
 USER root

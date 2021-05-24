@@ -4,23 +4,34 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { ObjectType, Field, InputType } from "type-graphql";
+import { User } from "./User";
 
-@Entity("OrgLayers")
+@Entity("UserProperties")
 @ObjectType()
-export class OrgLayer {
+export class UserProperty {
   @PrimaryGeneratedColumn()
   @Field()
   id: number;
 
-  @Column({ type: "varchar", length: 16, comment: "階層名" })
+  @Column({ type: "int", width: 11, comment: "ユーザのid" })
   @Field()
-  name: string;
+  user_id: number;
 
-  @Column({ type: "int", width: 11, comment: "階層の深さ" })
+  @Column({ type: "varchar", length: 16, comment: "属性のキー" })
   @Field()
-  deep: number;
+  key: string;
+
+  @Column({ type: "varchar", width: 255, comment: "属性の値" })
+  @Field()
+  value: string;
+
+  @Column({ type: "char", length: 16, comment: "valueの型" })
+  @Field()
+  type: string;
 
   @Column({ type: "date", comment: "運用開始日" })
   @Field((type) => String)
@@ -48,4 +59,4 @@ export class OrgLayer {
 }
 
 //@InputType()
-//export class AddOrgLayerData implements Partial<OrgLayer> {}
+//export class AddUserPropertyData implements Partial<UserProperty> {}

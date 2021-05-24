@@ -15,22 +15,24 @@ export class AppServer {
 
   public async setup(): Promise<void> {
     this.app.use(cors());
-    this.app.use(session({
-      secret: "hogehoge",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: false,
-        maxAge: 1000 * 60
-      }
-    }));
+    this.app.use(
+      session({
+        secret: "hogehoge",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          httpOnly: true,
+          secure: false,
+          maxAge: 1000 * 60,
+        },
+      })
+    );
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
 
     try {
       const schema = await buildSchema({
-        resolvers: [__dirname + "/resolver/**/*.ts"],
+        resolvers: [__dirname + "/../resolver/**/*.ts"],
       });
       this.server = new ApolloServer({
         schema,
@@ -39,11 +41,8 @@ export class AppServer {
 
       this.setupRoutes();
       this.server.applyMiddleware({ app: this.app });
-
-
     } catch (err) {
       console.log(err);
-
     }
   }
 
@@ -51,11 +50,10 @@ export class AppServer {
     this.app.get("/", (req, res) => {
       res.json({ message: "AppServer started" });
     });
-
   }
 
   public start(): void {
-    this.app.listen( {port: 4000}, () => {
+    this.app.listen({ port: 4000 }, () => {
       console.log(`server on http://localhost:4000${this.server.graphqlPath}`);
     });
   }

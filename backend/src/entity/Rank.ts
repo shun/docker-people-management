@@ -1,26 +1,22 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { ObjectType, Field, InputType } from "type-graphql";
 
-@Entity("OrgLayers")
+@Entity("Ranks")
 @ObjectType()
-export class OrgLayer {
-  @PrimaryGeneratedColumn()
-  @Field()
-  id: number;
-
-  @Column({ type: "varchar", length: 16, comment: "階層名" })
+export class Rank {
+  @PrimaryColumn({ type: "varchar", length: 16, comment: "職能名" })
   @Field()
   name: string;
 
-  @Column({ type: "int", width: 11, comment: "階層の深さ" })
+  @Column({ type: "int", width: 11, comment: "職能値" })
   @Field()
-  deep: number;
+  value: number;
 
   @Column({ type: "date", comment: "運用開始日" })
   @Field((type) => String)
@@ -48,4 +44,4 @@ export class OrgLayer {
 }
 
 //@InputType()
-//export class AddOrgLayerData implements Partial<OrgLayer> {}
+//export class AddRankData implements Partial<Rank> {}

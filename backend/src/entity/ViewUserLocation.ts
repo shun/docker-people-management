@@ -8,12 +8,13 @@ import {
 import { ObjectType, Field, InputType } from "type-graphql";
 
 import { User } from "./User";
-import { UserRank } from "./UserRank";
-import { Rank } from "./Rank";
+//import { ViewUser } from "./ViewUser";
+import { UserLocation } from "./UserLocation";
+import { Location } from "./Location";
 import { UserProperty } from "./UserProperty";
 
 @ViewEntity({
-  name: "ViewUserRanks",
+  name: "ViewUserLocations",
   expression: (connection: Connection) =>
     connection
       .createQueryBuilder()
@@ -21,22 +22,27 @@ import { UserProperty } from "./UserProperty";
       .addSelect("up.value", "user_cd")
       .addSelect("u.sei", "sei")
       .addSelect("u.mei", "mei")
-      .addSelect("ur.rank_name", "rank_name")
-      .addSelect("r.value", "rank_value")
-      .addSelect("ur.start_date", "start_date")
-      .addSelect("ur.end_date", "end_date")
+      .addSelect("l.company_name", "company_name")
+      .addSelect("l.branch_name", "branch_name")
+      .addSelect("l.postalcode", "postalcode")
+      .addSelect("l.address", "address")
+      .addSelect("l.address_kana", "address_kana")
+      .addSelect("l.tel", "tel")
+      .addSelect("l.fax", "fax")
+      .addSelect("ul.start_date", "start_date")
+      .addSelect("ul.end_date", "end_date")
       .from(User, "u")
       .innerJoin(UserProperty, "up", "up.user_id = u.id")
-      .innerJoin(UserRank, "ur", "ur.user_id = u.id")
-      .innerJoin(Rank, "r", "ur.rank_name = r.name")
+      .innerJoin(UserLocation, "ul", "ul.user_id = u.id")
+      .innerJoin(Location, "l", "ul.location_id = l.id")
       .where("u.end_date is NULL")
       .andWhere("up.key = 'user_cd'")
       .andWhere("up.end_date is NULL")
-      .andWhere("ur.end_date is NULL")
-      .andWhere("r.end_date is NULL"),
+      .andWhere("ul.end_date is NULL")
+      .andWhere("l.end_date is NULL"),
 })
 @ObjectType()
-export class ViewUserRank {
+export class ViewUserLocation {
   @ViewColumn()
   @Field()
   user_id: number;
@@ -55,14 +61,33 @@ export class ViewUserRank {
 
   @ViewColumn()
   @Field()
-  rank_name: string;
+  company_name: string;
 
   @ViewColumn()
   @Field()
-  rank_value: number;
+  branch_name: string;
 
   @ViewColumn()
   @Field()
+  postalcode: string;
+
+  @ViewColumn()
+  @Field()
+  address: string;
+
+  @ViewColumn()
+  @Field()
+  address_kana: string;
+
+  @ViewColumn()
+  @Field()
+  tel: string;
+
+  @ViewColumn()
+  @Field()
+  fax: string;
+
+  @ViewColumn()
   @Field((type) => String)
   start_date: Date;
 
@@ -71,7 +96,7 @@ export class ViewUserRank {
   end_date: Date;
 
   // Relation
-  @ManyToOne(() => User, (user) => user.ranks)
+  @ManyToOne(() => User, (user) => user.locations)
   @JoinColumn({
     name: "user_id",
     referencedColumnName: "id",

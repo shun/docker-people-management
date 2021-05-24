@@ -1,10 +1,12 @@
 import { Resolver, Mutation, Int, Arg, Query } from "type-graphql";
 import { getRepository, getConnection, createConnection } from "typeorm";
 import { User } from "../entity/User";
-import { OrgSection } from "../entity/OrgSection";
+import { UserProperty } from "../entity/UserProperty";
+//import { ViewUser } from "../entity/ViewUser";
+//import { OrgSection } from "../entity/OrgSection";
 //import { Organization } from "../entity/Organization";
-import { PersonalInfo } from "../entity/PersonalInfo";
-import { ViewUserOrganization } from "../entity/ViewUserOrganization";
+//import { PersonalInfo } from "../entity/PersonalInfo";
+//import { ViewUserOrganization } from "../entity/ViewUserOrganization";
 
 @Resolver()
 export class UserResolver {
@@ -37,28 +39,47 @@ export class UserResolver {
   //  return user;
   //}
 
-  @Query(() => [OrgSection])
-  async sections(): Promise<OrgSection[]> {
-    const sections = await getRepository(OrgSection).find();
+  //@Query(() => [OrgSection])
+  //async sections(): Promise<OrgSection[]> {
+  //  const sections = await getRepository(OrgSection).find();
 
-    return sections || [];
-  }
+  //  return sections || [];
+  //}
 
-  @Query(() => [ViewUserOrganization], {nullable: true})
-  async hoge(): Promise<ViewUserOrganization[] | undefined> {
-    const root = await getRepository(ViewUserOrganization).find({
-      relations: [
-        "infolist"
-      ]
-    });
+  //@Query(() => [ViewUserOrganization], { nullable: true })
+  //async hoge(): Promise<ViewUserOrganization[] | undefined> {
+  //  const root = await getRepository(ViewUserOrganization).find({
+  //    relations: ["infolist"],
+  //  });
 
-    console.log(root);
+  //  console.log(root);
 
-    return root;
-  }
+  //  return root;
+  //}
   //---------------------------------------------
   // Mutation
   //
+  @Query(() => User, { nullable: true })
+  async user(@Arg("user_cd") user_cd: string): Promise<User | null> {
+    const user = await getRepository(User).findOne({
+      where: {
+        code: user_cd,
+        end_date: null,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const properties = await getRepository(UserProperty).find({
+      where: {
+        user_id: user.id,
+        end_date: null,
+      },
+    });
+    return user;
+  }
 
   //---------------------------------------------
   // Function

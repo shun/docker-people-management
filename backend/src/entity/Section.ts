@@ -7,20 +7,24 @@ import {
 } from "typeorm";
 import { ObjectType, Field, InputType } from "type-graphql";
 
-@Entity("OrgLayers")
+@Entity("Sections")
 @ObjectType()
-export class OrgLayer {
+export class Section {
   @PrimaryGeneratedColumn()
   @Field()
   id: number;
 
-  @Column({ type: "varchar", length: 16, comment: "階層名" })
+  @Column({ type: "int", width: 11, comment: "所属階層のid" })
+  @Field()
+  layer_id: number;
+
+  @Column({ type: "varchar", length: 16, comment: "所属名" })
   @Field()
   name: string;
 
-  @Column({ type: "int", width: 11, comment: "階層の深さ" })
+  @Column({ type: "varchar", length: 255, comment: "所属のパス" })
   @Field()
-  deep: number;
+  path: string;
 
   @Column({ type: "date", comment: "運用開始日" })
   @Field((type) => String)
@@ -48,4 +52,4 @@ export class OrgLayer {
 }
 
 //@InputType()
-//export class AddOrgLayerData implements Partial<OrgLayer> {}
+//export class AddSectionData implements Partial<Section> {}
